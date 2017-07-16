@@ -500,8 +500,11 @@ calibrate_return do_accel_calibration_measurements(orb_advert_t *mavlink_log_pub
 #else
 
 			// For the DriverFramework drivers, we fill device ID (this is the first time) by copying one report.
-			device_id[cur_accel] = report.device_id;
-			found_cur_accel = true;
+			if(report.device_id != 0)
+			{
+				device_id[cur_accel] = report.device_id;
+				found_cur_accel = true;
+			}
 
 #endif
 		}

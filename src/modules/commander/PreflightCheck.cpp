@@ -574,6 +574,9 @@ bool preflightCheck(orb_advert_t *mavlink_log_pub, bool checkMag, bool checkAcc,
 	checkMag = false;
 	checkAcc = false;
 	checkGyro = false;
+#elif defined(__PX4_POSIX_EDISON)
+	PX4_WARN("Preflight checks always pass on edison.");
+	return true;
 #elif defined(__PX4_POSIX_BEBOP)
 	PX4_WARN("Preflight checks always pass on Bebop.");
 	return true;

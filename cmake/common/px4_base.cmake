@@ -392,6 +392,16 @@ function(px4_add_common_flags)
 		-Wreorder
 		)
 
+if(USE_MRAA_LIB)	
+	set(cxx_compile_flags
+		-g
+		-fno-rtti
+		-std=gnu++11
+		-fno-threadsafe-statics
+		-DCONFIG_WCHAR_BUILTIN
+		-D__CUSTOM_FILE_IO__
+		)
+else()
 	set(cxx_compile_flags
 		-g
 		-fno-exceptions
@@ -401,7 +411,7 @@ function(px4_add_common_flags)
 		-DCONFIG_WCHAR_BUILTIN
 		-D__CUSTOM_FILE_IO__
 		)
-
+endif()
 	# regular Clang or AppleClang
 	if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 		# force color for clang (needed for clang + ccache)

@@ -116,13 +116,23 @@ else()
 		)
 
 	if (NOT APPLE)
-		target_link_libraries(${APP_NAME}
-			-Wl,--start-group
-			${module_libraries}
-			${df_driver_libs}
-			pthread m rt
-			-Wl,--end-group
-			)
+		if(USE_MRAA_LIB)	
+			target_link_libraries(${APP_NAME}
+				-Wl,--start-group
+				${module_libraries}
+				${df_driver_libs}
+				pthread m rt mraa
+				-Wl,--end-group
+				)	
+		else()	
+			target_link_libraries(${APP_NAME}
+				-Wl,--start-group
+				${module_libraries}
+				${df_driver_libs}
+				pthread m rt
+				-Wl,--end-group
+				)
+		endif()
 	else()
 		target_link_libraries(${APP_NAME}
 			${module_libraries}

@@ -326,9 +326,10 @@ int do_gyro_calibration(orb_advert_t *mavlink_log_pub)
 #else
 
 			// For the DriverFramework drivers, we fill device ID (this is the first time) by copying one report.
-			worker_data.device_id[cur_gyro] = report.device_id;
-			found_cur_gyro = true;
-
+			if(report.device_id != 0) {
+				worker_data.device_id[cur_gyro] = report.device_id;
+				found_cur_gyro = true;
+			}
 #endif
 		}
 

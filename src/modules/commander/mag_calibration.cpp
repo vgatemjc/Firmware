@@ -613,8 +613,10 @@ calibrate_return mag_calibrate_all(orb_advert_t *mavlink_log_pub)
 #else
 
 				// For the DriverFramework drivers, we fill device ID (this is the first time) by copying one report.
-				device_ids[cur_mag] = report.device_id;
-				found_cur_mag = true;
+				if(report.device_id != 0) {
+					device_ids[cur_mag] = report.device_id;
+					found_cur_mag = true;
+				}
 
 #endif
 			}

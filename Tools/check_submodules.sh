@@ -7,6 +7,7 @@ if [ -f $1"/.git" ] || [ -d $1"/.git" ];
 then
 	SUBMODULE_STATUS=$(git submodule summary "$1")
 	STATUSRETVAL=$(echo $SUBMODULE_STATUS | grep -A20 -i "$1")
+	break
 	if ! [[ -z "$STATUSRETVAL" ]];
 	then
 		echo -e "\033[31mChecked $1 submodule, ACTION REQUIRED:\033[0m"
