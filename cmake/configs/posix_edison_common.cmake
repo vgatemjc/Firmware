@@ -76,13 +76,8 @@ set(config_module_list
 	#
 	# PX4 drivers
 	#
-	drivers/gps
-	drivers/navio_adc
-	drivers/navio_sysfs_rc_in
-	drivers/navio_sysfs_pwm_out
+	drivers/mraa_pwm_out
 	drivers/linux_gpio
-	drivers/navio_rgbled
-	drivers/pwm_out_sim
 
 	#
 	# Libraries
@@ -116,9 +111,4 @@ set(config_module_list
 #
 set(config_df_driver_list
 	mpu9250
-	lsm9ds1
-	ms5611
-	hmc5883
-	trone
-	isl29501
 )

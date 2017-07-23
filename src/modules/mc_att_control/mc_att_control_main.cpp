@@ -1113,16 +1113,29 @@ MulticopterAttitudeControl::task_main()
 	parameters_update();
 
 	/* wakeup source: gyro data from sensor selected by the sensor app */
+#if 0
 	px4_pollfd_struct_t poll_fds = {};
 	poll_fds.events = POLLIN;
+#else
+	px4_pollfd_struct_t poll_fds[_gyro_count];
+	for (unsigned s = 0; s < _gyro_count; s++) {
+		poll_fds[s].fd = _sensor_gyro_sub[s];
+		poll_fds[s].events = POLLIN;
+	}
+#endif
+//	_selected_gyro = 1;
+//	warn("mc att ctrl: selected_gyro %d, gyro_count %d", _selected_gyro, _gyro_count);
 
 	while (!_task_should_exit) {
-
+#if 0
 		poll_fds.fd = _sensor_gyro_sub[_selected_gyro];
 
 		/* wait for up to 100ms for data */
 		int pret = px4_poll(&poll_fds, 1, 100);
-
+#else
+		/* wait for up to 100ms for data */
+		int pret = px4_poll(&poll_fds[0], _gyro_count, 100);
+#endif
 		/* timed out - periodic check for _task_should_exit */
 		if (pret == 0) {
 			continue;
@@ -1139,7 +1152,17 @@ MulticopterAttitudeControl::task_main()
 		perf_begin(_loop_perf);
 
 		/* run controller on gyro changes */
+#if 0
 		if (poll_fds.revents & POLLIN) {
+#else
+		for(unsigned s = 0; s < _gyro_count; s++ )
+		{
+			if(poll_fds[s].revents & POLLIN)
+				_selected_gyro = s;
+		}
+
+		{
+#endif
 			static uint64_t last_run = 0;
 			float dt = (hrt_absolute_time() - last_run) / 1000000.0f;
 			last_run = hrt_absolute_time();
